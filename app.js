@@ -2,7 +2,10 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const mysql = require("mysql2");
+const cors = require("cors");
+app.use(cors());
 app.use(express.json());
+
 const con = mysql.createConnection({
     host:"localhost",
     user: "root",
@@ -21,11 +24,12 @@ con.connect((err)=>{
 })
 
 app.post('/post',(req,res,next)=>{
+    const id = req.params.id;
     const price = req.body.price;
     const description = req.body.description;
     const option = req.body.option;
-
-    con.query('insert into expence values(?,?,?)',[price,description,option],(err,result)=>{
+    console.log(id,price,description,option)
+    con.query('insert into expence values(?,?,?,?)',[id,price,description,option],(err,result)=>{
         if(err)
         {
             console.log(err);
@@ -34,6 +38,23 @@ app.post('/post',(req,res,next)=>{
             res.send("Posted");
         }
     })
+})
+
+app.put("/update/:id",(req,res,next)=>{
+    const uid = req.params.id;
+    const price =req.body.price;
+    const description = req.body.description;
+    const option = req.body.option;
+
+    con.query("UPDATE expence SET price=?,description=?,option=? WHERE id=?",[price,description,option,uid,],(err,result)=>{
+        if(err)
+        {
+            console.log(err);
+        }
+        else{
+            res.send("Updated");
+        }
+    });
 })
 
 
