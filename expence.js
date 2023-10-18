@@ -69,7 +69,7 @@ function AddUsertoScreen(obj)
 }
 async function Himanidevi(id)
 {
-    await axios.delete("http://localhost:3000/delete/"+id)
+    
     
     let parent = document.getElementById("Listofexpence");
     for(let i =0;i<parent.children.length;i++)
@@ -80,6 +80,7 @@ async function Himanidevi(id)
             parent.removeChild(child);
         }
     }
+    await axios.delete("http://localhost:3000/delete/"+id)
 }
 function Yuktadevi(obj)
 {
